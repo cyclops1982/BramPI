@@ -5,25 +5,26 @@ The idea is based on others:
 		According to a lot of others, this creates flicker.
 
 
+Some notes:
+- We can get Luminacance and/or Mean to see if a picture is correctly exposed.
+- We can calculate the EV value (and thus use the light meter of the camera) to figure out how dark it really is.
+- Based on EV, we should be able to know how far we are in the process
+- The problem is that at some point, we want to not expose correctly anymore and just expose it to a certain area. This has to do with the fact that sunset and/or night sky is not a correct exposure, it's actually underexpose.
+
+
+To figure out:
+- What is the shortest shutter speed we can do with bulb mode on gphoto
+- To figure out what EV values we have at sunset and at night sky (including no moon to full moon)
+
+
 Main problems to solve:
-	- What is the algoritm to set the exposure?
-		- Simple:
-			If exposure/lum value is being lowered over X average photo's with a threshold, then raise exposure according to the config.
-			This is what rpi-timelapse does
-			The amount of photo's to use for the average & the threshold would be the algoritm parametes. It does means that we slowly catch-up on the brightness and would need some kind of maximum difference from the start...
-		- Bulb mode changes
-			Bulb should provide a way to do without flicker, but that also means that we need to understand *exactly* how to change the time & up the iso.
-
-		- Analysis
-			- Check if LUM or MEAN is the same for a camera-exposed picture, or if this is based on "what's in the photo"
-
-	- How do we convert the different camera modes into something that we can change
-	- Make sure bulb mode works well
-		 ./gphoto2/bin/gphoto2 --set-config eosremoterelease=5 --wait-event=500ms --set-config eosremoterelease=4
-
 	- I only want to do shutter speed and ISO changes, not appenture.
 		- If we raise shutter speed, then we can leave iso alone
 		- If we raise iso, then we need to leave shutter speed alone.
 
 
 
+
+Technical notes:
+- To get the newly libgphoto correctly recognized, use: export PKG_CONFIG_PATH=/home/cyclops/dev/BramPI/libgphoto2/lib/pkgconfig/
+- Bulb photo with gphoto: ./gphoto2/bin/gphoto2 --set-config eosremoterelease=5 --wait-event=500ms --set-config eosremoterelease=4
