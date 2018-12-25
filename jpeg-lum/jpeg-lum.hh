@@ -13,7 +13,6 @@ struct lum_info_t {
 	unsigned int histogram[3][256];
 	unsigned int width;
 	unsigned int height;
-	unsigned long count;
 	double luminance;
 	double clipped;
 };
@@ -56,3 +55,5 @@ lut_t lut[LUT_LENGTH] =
   {252,  5},
   {253,  6}
 };
+
+lum_info_t read_jpeg_file(const char *filename);

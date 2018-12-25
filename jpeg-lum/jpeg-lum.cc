@@ -11,10 +11,7 @@
 
 #include "jpeg-lum.hh"
 
-
-
-
-
+using namespace std;
 
 double lum(double x)
 {
@@ -33,7 +30,7 @@ double lum(double x)
             return lut[i].y + ( lut[i+1].y - lut[i].y ) * diffx / diffn; 
         }
     }
-    printf("error - not found\n");
+    cout << "error - not found"<<std::endl;
     return 0; // Not in Range
 }
 
@@ -50,7 +47,7 @@ lum_info_t read_jpeg_file(const char *filename)
   unsigned int i = 0;
   int component = 0;
   if (!infile) {
-      printf("Error opening jpeg file %s\n!", filename);
+      cout<<"Error opening jpeg file "<<filename<<endl; 
       throw "Error opening jpeg file";
   }
   cinfo.err = jpeg_std_error(&jerr);
@@ -62,8 +59,8 @@ lum_info_t read_jpeg_file(const char *filename)
   info.width = cinfo.output_width;
   info.height = cinfo.output_height;
   info.luminance = 0.0;
-  info.size = cinfo.output_width*cinfo.output_height*cinfo.num_components*sizeof(unsigned int);
-  memset(info.histogram, 0, sizeof(int)*256*3);
+  info.size = cinfo.output_width * cinfo.output_height * cinfo.num_components * sizeof(unsigned int);
+  //memset(info.histogram, 0, sizeof(int)*256*3);
   row_pointer[0] = (unsigned char *)malloc(cinfo.output_width*cinfo.num_components);
   
   while (cinfo.output_scanline < cinfo.image_height) {
@@ -76,8 +73,8 @@ lum_info_t read_jpeg_file(const char *filename)
                   pixel = lum(pixel);
                   if(pixel > 4) info.clipped++;
                   info.luminance += pixel;
-                  info.count++;
-                  info.histogram[component][(int)pixel]++;
+//                  info.histogram[component][(int)pixel]++;
+                  count++;
               }
           }
       }

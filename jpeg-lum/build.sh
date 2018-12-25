@@ -4,6 +4,6 @@
 
 rm TestApp
 
-g++ -Wall  test.cpp -o TestApp -ljpeg
+g++ -Wall -g test.cpp -o TestApp -ljpeg
 
 
