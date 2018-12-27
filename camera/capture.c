@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include "gphoto2/gphoto2.h"
-#include "gphoto2/gphoto2-context.h"
-#include "gphoto2/gphoto2-camera.h"
+#include <gphoto2/gphoto2.h>
+#include <gphoto2/gphoto2-context.h>
+#include <gphoto2/gphoto2-camera.h>
 
 
 static GPContext* create_context() {
