@@ -10,7 +10,7 @@ struct lut_t {
 
 struct lum_info_t {
 	unsigned int size;
-	unsigned int histogram[3][256];
+	//unsigned int histogram[3][256];
 	unsigned int width;
 	unsigned int height;
 	double luminance;
