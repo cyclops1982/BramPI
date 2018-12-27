@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<head>
+        <title>WebSocket testing file</title>
+        <link rel="stylesheet" href="reset.css" />
+        <link rel="stylesheet" href="Style.css" />
+        <script type="text/javascript" src="jquery.js"></script>
+
+        <script type="text/javascript">
+
+        	
+
+            $(document).ready(function() {
+                console.log("Loading websocket...");
+                var socket = new WebSocket("ws://127.0.0.1:7890/", "protocol1");
+                socket.onopen = function() {
+                    console.log("connection opened...");
+                    socket.send("some data");
+                }
+                
+            });
+        </script>
+</head>
+<body>
+
+</body>
+</html>
