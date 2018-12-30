@@ -8,7 +8,7 @@ using namespace std;
 int main(int argc, char **argv) 
 {
 
-  if (argc < 1) {
+  if (argc <= 1) {
     cout<<"Usage "<<argv[0]<<" <file> "<<endl;
     return -1;
   }
@@ -16,10 +16,10 @@ int main(int argc, char **argv)
   std::vector<std::string> images;
   images.assign(argv+1, argv+argc);
 
-  for (std::vector<string>::iterator image = images.begin(); image != images.end(); ++image) {
+  for (std::vector<string>::const_iterator image = images.begin(); image != images.end(); ++image) {
     cout<<"File:" <<*image<<endl;
-    lum_info_t info = read_jpeg_file((*image).c_str());
-    cout<<"\tLuminance:"<<info.luminance<<endl;
+    JpegLum a = JpegLum(&(*image));
+    cout<<"\tLuminance:"<<a.luminance<<endl;
   }
   return 0;
 } 

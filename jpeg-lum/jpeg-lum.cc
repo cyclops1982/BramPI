@@ -13,17 +13,17 @@
 
 using namespace std;
 
-double lum(double x)
+double JpegLum::lum(double x)
 {
-    int i;
+    if(x < lut[0].x) {
+      return lut[0].y - 1;
+    }
+    if(x > lut[LUT_LENGTH-1].x) {
+      return lut[LUT_LENGTH-1].y + 1;
+    }
 
-    if(x < lut[0].x) return lut[0].y - 1;
-    if(x > lut[LUT_LENGTH-1].x) return lut[LUT_LENGTH-1].y + 1;
-
-    for( i = 0; i < LUT_LENGTH-1; i++ )
-    {
-        if ( lut[i].x <= x && lut[i+1].x >= x )
-        {
+    for(int i = 0; i < LUT_LENGTH-1; i++ ) {
+        if ( lut[i].x <= x && lut[i+1].x >= x ) {
             double diffx = x - lut[i].x;
             double diffn = lut[i+1].x - lut[i].x;
 
@@ -34,7 +34,16 @@ double lum(double x)
     return 0; // Not in Range
 }
 
-lum_info_t read_jpeg_file(const char *filename)
+JpegLum::JpegLum(const std::string *filename) {
+  lum_info_t stuff = ReadJpegFile(filename->c_str());
+  this->size = stuff.size;
+  this->width = stuff.width;
+  this->height = stuff.height;
+  this->luminance = stuff.luminance;
+  this->clipped = stuff.clipped;
+}
+
+JpegLum::lum_info_t JpegLum::ReadJpegFile(const char *filename)
 {
   double pixel;
   unsigned long count = 0;
