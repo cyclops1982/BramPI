@@ -11,15 +11,6 @@ private:
   };
 
 
-  struct lum_info_t {
-    unsigned int size;
-    //unsigned int histogram[3][256];
-    unsigned int width;
-    unsigned int height;
-    double luminance;
-    double clipped;
-  };
-
   lut_t lut[LUT_LENGTH] = 
   {
     {4.793865/4,  -7},
@@ -59,7 +50,7 @@ private:
 
 
   double lum(double x);
-  lum_info_t ReadJpegFile(const char *filename);
+  void ReadJpegFile(const char *filename);
 
 
 
@@ -72,4 +63,5 @@ public:
   unsigned int height;
   double luminance;
   double clipped;
+  unsigned int histogram[3][256];
 };

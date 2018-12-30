@@ -35,20 +35,14 @@ double JpegLum::lum(double x)
 }
 
 JpegLum::JpegLum(const std::string *filename) {
-  lum_info_t stuff = ReadJpegFile(filename->c_str());
-  this->size = stuff.size;
-  this->width = stuff.width;
-  this->height = stuff.height;
-  this->luminance = stuff.luminance;
-  this->clipped = stuff.clipped;
+  ReadJpegFile(filename->c_str());
 }
 
-JpegLum::lum_info_t JpegLum::ReadJpegFile(const char *filename)
+void JpegLum::ReadJpegFile(const char *filename)
 {
   double pixel;
   unsigned long count = 0;
 
-  lum_info_t info;
   struct jpeg_decompress_struct cinfo;
   struct jpeg_error_mgr jerr;
   JSAMPROW row_pointer[1];
@@ -65,11 +59,10 @@ JpegLum::lum_info_t JpegLum::ReadJpegFile(const char *filename)
   jpeg_read_header(&cinfo, TRUE);
   jpeg_start_decompress(&cinfo);
 
-  info.width = cinfo.output_width;
-  info.height = cinfo.output_height;
-  info.luminance = 0.0;
-  info.size = cinfo.output_width * cinfo.output_height * cinfo.num_components * sizeof(unsigned int);
-  //memset(info.histogram, 0, sizeof(int)*256*3);
+  this->width = cinfo.output_width;
+  this->height = cinfo.output_height;
+  this->luminance = 0.0;
+  this->size = cinfo.output_width * cinfo.output_height * cinfo.num_components * sizeof(unsigned int);
   row_pointer[0] = (unsigned char *)malloc(cinfo.output_width*cinfo.num_components);
   
   while (cinfo.output_scanline < cinfo.image_height) {
@@ -78,21 +71,21 @@ JpegLum::lum_info_t JpegLum::ReadJpegFile(const char *filename)
           pixel = 0.0;
           for(component=0;component<cinfo.num_components;component++) {
               if(component < 3) {
-                  pixel = (double) row_pointer[0][i + component];
-                  pixel = lum(pixel);
-                  if(pixel > 4) info.clipped++;
-                  info.luminance += pixel;
-//                  info.histogram[component][(int)pixel]++;
+                  pixel = lum((double)row_pointer[0][i + component]);
+                  if(pixel > 4) {
+                    this->clipped++;
+                  }
+                  this->luminance += pixel;
+                  this->histogram[component][(int)pixel]++;
                   count++;
               }
           }
       }
   }
-  info.luminance /= (double)count;
-  info.clipped /= (double)count;
+  this->luminance /= (double)count;
+  this->clipped /= (double)count;
   jpeg_finish_decompress(&cinfo);
   jpeg_destroy_decompress(&cinfo);
   free(row_pointer[0]);
   fclose(infile);
-  return info;
 }
