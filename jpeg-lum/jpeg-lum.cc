@@ -47,12 +47,11 @@ void JpegLum::ReadJpegFile(const char *filename)
   struct jpeg_error_mgr jerr;
   JSAMPROW row_pointer[1];
   FILE *infile = fopen(filename, "rb");
-  unsigned int i = 0;
-  int component = 0;
   if (!infile) {
       cout<<"Error opening jpeg file "<<filename<<endl; 
       throw "Error opening jpeg file";
   }
+  
   cinfo.err = jpeg_std_error(&jerr);
   jpeg_create_decompress(&cinfo);
   jpeg_stdio_src(&cinfo, infile);
@@ -67,9 +66,9 @@ void JpegLum::ReadJpegFile(const char *filename)
   
   while (cinfo.output_scanline < cinfo.image_height) {
       jpeg_read_scanlines( &cinfo, row_pointer, 1 );
-      for (i=0; i<cinfo.image_width;i+=cinfo.num_components) {
+      for (unsigned int i=0; i<cinfo.image_width;i+=cinfo.num_components) {
           pixel = 0.0;
-          for(component=0;component<cinfo.num_components;component++) {
+          for(int component=0;component<cinfo.num_components;component++) {
               if(component < 3) {
                   pixel = lum((double)row_pointer[0][i + component]);
                   if(pixel > 4) {
