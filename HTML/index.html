@@ -2,9 +2,7 @@
 <head>
         <title>WebSocket testing file</title>
         <link rel="stylesheet" href="reset.css" />
-        <link rel="stylesheet" href="Style.css" />
         <script type="text/javascript" src="jquery.js"></script>
-
         <script type="text/javascript">
 
         	
@@ -15,7 +13,11 @@
                 socket.onopen = function() {
                     console.log("connection opened...");
                     socket.send("some data");
-                }
+                };
+                socket.onmessage = function(event) {
+                    console.log("received data");
+                    console.log(event);
+                };
                 
             });
         </script>

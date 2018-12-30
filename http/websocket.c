@@ -23,6 +23,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -32,16 +33,20 @@
 static void on_ws_message(h2o_websocket_conn_t *conn, const struct wslay_event_on_msg_recv_arg *arg)
 {
 
-    printf("Received message.\n");    
+    printf("Received message. Opcode: %d\n", arg->opcode);    
     if (arg == NULL) {
         h2o_websocket_close(conn);
         return;
     }
 
-    
+
     if (!wslay_is_ctrl_frame(arg->opcode)) {
         struct wslay_event_msg msgarg = {arg->opcode, arg->msg, arg->msg_length};
-        wslay_event_queue_msg(conn->ws_ctx, &msgarg);
+
+        std::string abc("This is a test");
+        struct wslay_event_msg msgarg1 = {arg->opcode, (uint8_t*)abc.c_str(), strlen(abc.c_str())};
+        wslay_event_queue_msg(conn->ws_ctx, &msgarg1);
+        
     }
 }
 
