@@ -198,6 +198,8 @@ static int getSettings() {
 		return retval;
 	}
 
+	cout<<"Done!"<<endl;
+	gp_widget_free(widget);
 	gp_camera_exit(camera, context);
 	return retval;
 }
