@@ -36,7 +36,6 @@ int canon_enable_capture (Camera *camera, GPContext *context) {
 		goto out;
 	}
 
-	/* Now set the toggle to the wanted value */
 	char *stuff = "Memory card";
 
 	ret = gp_widget_set_value (widget, stuff);
