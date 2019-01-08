@@ -1,4 +1,4 @@
-CXXFLAGS:=-std=c++11 -Wall -Wextra -g -pthread
+CXXFLAGS:=-std=c++17 -Wall -Wextra -g -pthread -lh2o-evloop -lssl -lcrypto -lwslay -Iext/simplesocket
 
 PROGRAMS = brampi
 
@@ -7,5 +7,5 @@ all: $(PROGRAMS)
 clean:
 	rm -f *~ *.o *.d  $(PROGRAMS)
 
-brampi: main.cc
-	g++ $(CXXFLAGS) -o $@ $^
+brampi: main.o h2o-pp.o
+	g++ -o $@ $^ $(CXXFLAGS) 

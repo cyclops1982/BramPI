@@ -1,8 +1,11 @@
 #include <iostream>
+#include <signal.h>
 
-using namespace std;
 
 int main(int argc, char **argv) {
+    signal(SIGPIPE, SIG_IGN); // Thx ahu.
+
+
 
 	return 0;
 }

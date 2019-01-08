@@ -1,9 +1,9 @@
 #include "h2o-pp.hh"
-#include "comboaddress.hh"
 
-using namespace std;
 
-H2OWebserver::H2OWebserver(const std::string_view hostname, int port)
+using namespace std::experimental;
+
+H2OWebserver::H2OWebserver(const string_view hostname, int port)
 {
   memset(&d_ctx, 0, sizeof(d_ctx));
   memset(&d_config, 0, sizeof(d_config));
@@ -15,7 +15,7 @@ H2OWebserver::H2OWebserver(const std::string_view hostname, int port)
   h2o_context_init(&d_ctx, h2o_evloop_create(), &d_config);
 }
 
-h2o_hostconf_t* H2OWebserver::addHost(const std::string_view hostname, int port)
+h2o_hostconf_t* H2OWebserver::addHost(const string_view hostname, int port)
 {
   return h2o_config_register_host(&d_config, h2o_iovec_init(&hostname[0], hostname.length()), port);
 }
@@ -65,15 +65,6 @@ void H2OWebserver::addHandler(const std::string& path, shandler_t* func, h2o_hos
   handler->handler.on_req=H2OWebserver::mwrapper;
 }
 
-void H2OWebserver::addHandler(const std::string& path, jhandler_t* func, h2o_hostconf_t* host)
-{
-  h2o_pathconf_t *pathconf = h2o_config_register_path(host ? host : d_hostconf, &path[0], 0);
-  MultiHandler *handler = (MultiHandler*)h2o_create_handler(pathconf, sizeof(*handler));
-  handler->jhandler = func;
-  handler->handler.on_req=H2OWebserver::mwrapper;
-}
-
-
 int H2OWebserver::mwrapper(h2o_handler_t* handler, h2o_req_t* req)
 {
   MultiHandler* shandler = (MultiHandler*)handler;
@@ -103,7 +94,7 @@ h2o_accept_ctx_t* H2OWebserver::addContext()
 }
 
 
-h2o_accept_ctx_t* H2OWebserver::addSSLContext(const std::string_view certificate, const std::string_view key, const std::string_view ciphers)
+h2o_accept_ctx_t* H2OWebserver::addSSLContext(const string_view certificate, const string_view key, const string_view ciphers)
 {
   auto accept_ctx = new h2o_accept_ctx_t();
   memset(accept_ctx, 0, sizeof(h2o_accept_ctx_t));
@@ -147,13 +138,13 @@ void H2OWebserver::runLoop()
 }
 
 
-void H2OWebserver::addDirectory(const std::string_view path, const std::string_view directory, h2o_hostconf_t* hconf)
+void H2OWebserver::addDirectory(const string_view path, const string_view directory, h2o_hostconf_t* hconf)
 {
   h2o_pathconf_t* pathconf = h2o_config_register_path(hconf ? hconf : d_hostconf, &path[0], 0);
   h2o_file_register(pathconf, &directory[0], NULL, NULL, 0);
 }
 
-std::string_view convert(const h2o_iovec_t& vec)
+string_view convert(const h2o_iovec_t& vec)
 {
-  return std::string_view(vec.base, vec.len);
+  return string_view(vec.base, vec.len);
 }

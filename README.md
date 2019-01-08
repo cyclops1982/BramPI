@@ -4,3 +4,14 @@ The BramPI project is inspirired by the [TimeLapse VIEW](https://github.com/time
 
 ## Current status
 Currently no functionality is actually implemented. The repository holds a bunch of small tests that should later be combined into a real project.
+
+
+## Environment
+Currently, the code is being developed on Debian Stretch. The code is NOT tested on rasbian (yet).
+
+To get an environment up and running to build this software:
+``
+apt-get install build-essential make libh2o-dev
+``
+libh2o-dev comes from stretch-backports.
+
