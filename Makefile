@@ -7,5 +7,5 @@ all: $(PROGRAMS)
 clean:
 	rm -f *~ *.o *.d  $(PROGRAMS)
 
-brampi: main.o h2o-pp.o
+brampi: main.o h2o-pp.o ext/simplesocket/comboaddress.o
 	g++ -o $@ $^ $(CXXFLAGS) 
